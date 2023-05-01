@@ -1,7 +1,9 @@
 from datetime import date
 from pytest import fixture
 from cable import DefaultParams
-from varname import nameof
+from tkinter import *
+from tkinter.ttk import *
+from my_widjets import ScrolledListLabelFrame
 
 def test_default_params():
 
@@ -19,12 +21,19 @@ def test_default_params():
     box_100_len_int_intvar = Var()
     box_80_len_int_intvar = Var()
     takeaway_len_int_intvar = Var()
-    var_tpl = ((box_80_len_int_intvar, nameof(box_80_len_int_intvar)),
-               (box_100_len_int_intvar, nameof(box_100_len_int_intvar)),
-               (box_140_len_int_intvar, nameof(box_140_len_int_intvar)),
-               (takeaway_len_int_intvar, nameof(takeaway_len_int_intvar)))
+    var_tpl = ((box_80_len_int_intvar, "box_80_len_int_intvar"),
+               (box_100_len_int_intvar, "box_100_len_int_intvar"),
+               (box_140_len_int_intvar, "box_140_len_int_intvar"),
+               (takeaway_len_int_intvar, "takeaway_len_int_intvar"))
     default_params_inst = DefaultParams().get_default_params_inst_func()
     print()
-    print(default_params_inst.__dict__)
+    # print(default_params_inst.__dict__)
     default_params_inst.get_params_value(var_tpl)
-    assert var_tpl == (None, None, None, None)
+    var_value_tpl = tuple(var[0].get() for var in var_tpl)
+    assert var_value_tpl == (None, None, None, None)
+
+def test_scrolled_list_label_frame():
+    root = Tk()
+    scrolled_frame = ScrolledListLabelFrame(root, (1, 2, 3, 4))
+    scrolled_frame.pack()
+    root.mainloop()

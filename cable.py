@@ -6,6 +6,7 @@ from definition import *
 
 shelve_db_name = "products"
 
+
 class DefaultParams:
 
     default_params_key_str = "default_params"
@@ -22,6 +23,7 @@ class DefaultParams:
         :return:
         """
         shelve_db = shelve.open(shelve_db_name)
+
         default_params_inst = shelve_db.get(self.default_params_key_str, None)
         if not default_params_inst:
             default_params_inst = self
@@ -119,11 +121,11 @@ if __name__ == "__main__":
               (box_100_len_int_intvar, "box_100_len_int_intvar"),
               (box_140_len_int_intvar, "box_140_len_int_intvar"),
               (takeaway_len_int_intvar, "takeaway_len_int_intvar"))
-    default_params_inst = DefaultParams().get_default_params_inst_func()
+    default_params_inst_ = DefaultParams().get_default_params_inst_func()
 
 
 
-    default_params_inst.get_params_value(var_tpl)
+    default_params_inst_.get_params_value(var_tpl)
     # var_tpl = tuple(var[0].get() for var in var_tpl)
     # print(var_tpl)
     # assert var_tpl == (None, None, None, None)
@@ -131,8 +133,8 @@ if __name__ == "__main__":
     box_100_len_int_intvar.set(20)
     box_140_len_int_intvar.set(30)
     takeaway_len_int_intvar.set(40)
-    default_params_inst.set_params_value_func(var_tpl)
-    default_params_inst.get_params_value(var_tpl)
+    default_params_inst_.set_params_value_func(var_tpl)
+    default_params_inst_.get_params_value(var_tpl)
     print(var_tpl)
     var_tpl = tuple(var[0].get() for var in var_tpl)
 

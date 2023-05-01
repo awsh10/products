@@ -184,15 +184,32 @@ class ParamMix:
 
 
 class ScrolledListLabelFrame(LabelFrame):
-    def __init__(self, parent_prm=None, data_tpl_prm=''):
+    def __init__(self, parent_prm=None, data_tpl_prm='', text="Изделия"):
         super().__init__(parent_prm)
-        label_frame = LabelFrame(parent_prm, text="Изделия")
-        scroll_bar = Scrollbar(label_frame)
-        list_box = Listbox(label_frame, relief=SUNKEN)
+        self.list_box = None
+        self.make_widgets(data_tpl_prm)
+
+    def make_widgets(self, data_tpl_prm):
+        scroll_bar = Scrollbar(self)
+        list_box = Listbox(self, relief=SUNKEN)
         scroll_bar.config(command=list_box.yview)
         list_box.config(yscrollcommand=scroll_bar.set)
         scroll_bar.pack(side=RIGHT, fill=Y)
         list_box.pack(side=LEFT, expand=YES, fill=BOTH)
+        pos_int = 0
+        for datum in data_tpl_prm:
+            list_box.insert(pos_int, datum)
+            pos_int += 1
+        list_box.bind("<Double-1>", self.handle_list)
+        self.list_box = list_box
+
+    def handle_list(self, event):
+        index_int = self.list_box.curselection()
+        datum = self.list_box.get(index_int)
+        self.run_command(datum)
+
+    def run_command(self, selection):
+        print('selected:', selection)
 
 
 class ProductsFrame(LabelFrame):
@@ -200,27 +217,14 @@ class ProductsFrame(LabelFrame):
         super().__init__(parent_prm, text=text)
         self.common_frame_1 = Frame(self)
         self.common_frame_1.pack(side=RIGHT)
-        self.products_list_box = self.create_products_list_box(self.common_frame_1)
-        self.products_list_box.pack()
-        self.create_cables_list_box()
-        self.cable_frame = self.create_cable_frame
+        self.products_list_label_frame = ScrolledListLabelFrame(self.common_frame_1)
+        self.products_list_label_frame.pack()
+        self.cables_list_label_frame = ScrolledListLabelFrame(self.common_frame_1)
+        self.cable_frame = self.create_cable_frame()
 
-    @staticmethod
-    def create_products_list_box(parent_prm):
-        label_frame = LabelFrame(parent_prm, text="Изделия")
-        scroll_bar = Scrollbar(label_frame)
-        list_box = Listbox(label_frame, relief=SUNKEN)
-        scroll_bar.config(command=list_box.yview)
-        list_box.config(yscrollcommand=scroll_bar.set)
-        scroll_bar.pack(side=RIGHT, fill=Y)
-        list_box.pack(side=LEFT, expand=YES, fill=BOTH)
-        return label_frame
-
-    def create_cables_list_box(self):
-        pass
 
     def create_cable_frame(self):
-        pass
+        return None
 
 
 
